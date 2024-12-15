@@ -1,0 +1,12 @@
+I0205 17:39:24.921315   28736 ssh_proxy.go:51] "logged in" username="avycado13"
+I0205 17:39:24.921792   28736 ssh_proxy.go:75] "client started" ipcName="csb-cli-production" status="Not Connected"
+I0205 17:39:24.921927   28736 ssh_proxy.go:116] "received message" type=-1 data="" status="Connecting"
+I0205 17:39:24.921948   28736 ssh_proxy.go:75] "client started" ipcName="csb-cli-production" status="Connecting"
+E0205 17:39:25.923381   28736 ssh_proxy.go:84] "client.Read" err="timed out trying to connect"
+I0205 17:39:25.928954   28736 ssh_proxy.go:103] "ssh proxy server started" pid=28737
+I0205 17:39:26.930074   28736 ssh_proxy.go:75] "client started" ipcName="csb-cli-production" status="Not Connected"
+I0205 17:39:26.930279   28736 ssh_proxy.go:116] "received message" type=-1 data="" status="Connecting"
+I0205 17:39:26.930328   28736 ssh_proxy.go:75] "client started" ipcName="csb-cli-production" status="Connecting"
+I0205 17:39:26.942743   28736 ssh_proxy.go:116] "received message" type=-1 data="" status="Connected"
+I0205 17:39:26.942831   28736 ssh_proxy.go:75] "client started" ipcName="csb-cli-production" status="Connected"
+I0205 17:39:26.943326   28736 ssh_proxy.go:118] "received message" type=1 data="61434"

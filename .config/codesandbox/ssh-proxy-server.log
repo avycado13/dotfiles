@@ -1,0 +1,14 @@
+I0205 17:39:26.267182   28737 ssh_proxy_server.go:53] "logged in" username="avycado13"
+I0205 17:39:26.267892   28737 ssh_proxy_server.go:65] "server started" ipcName="csb-cli-production" status="Listening"
+I0205 17:39:26.942764   28737 ssh_proxy_server.go:73] "received message" type=-1 data="" status="Connected"
+I0205 17:39:26.942962   28737 ssh_proxy_server.go:75] "received message" type=1 data="gdnzcf"
+I0205 17:39:26.943189   28737 proxyng.go:129] "proxy started" port=61434
+I0205 17:39:26.943202   28737 ssh_proxy_server.go:133] "proxy started" vmId="gdnzcf" port=61434
+I0205 17:39:26.943484   28737 ssh_proxy_server.go:73] "received message" type=-1 data="" status="Disconnected"
+I0205 17:39:33.978710   28737 api.go:140] "starting VM" id="gdnzcf"
+I0205 17:39:35.100229   28737 proxyng.go:225] "proxying" proxy="ssh" count=1 src="127.0.0.1" dst="167.235.8.245:33690"
+I0205 17:39:59.837139   28737 proxyng.go:278] "after ReadFrom" n=10281 dir="local -> remote" err=null
+I0205 17:39:59.837169   28737 proxyng.go:287] "EOF / closed" n=10281 dir="local -> remote"
+I0205 17:39:59.837284   28737 proxyng.go:200] "proxying done" proxy="ssh" count=0 src="127.0.0.1" dst="167.235.8.245:33690"
+I0205 17:39:59.837350   28737 proxyng.go:278] "after ReadFrom" n=4300 dir="remote -> local" err="readfrom tcp 127.0.0.1:61434->127.0.0.1:61450: read tcp 192.168.86.225:61455->167.235.8.245:33690: use of closed network connection"
+I0205 17:39:59.837372   28737 proxyng.go:306] "read" n=4300 dir="remote -> local"

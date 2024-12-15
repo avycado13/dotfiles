@@ -1,0 +1,13 @@
+[user]
+	name = avycado13
+	email = 108358183+avycado13@users.noreply.github.com
+[trailer "changeid"]
+	key = Change-Id
+[color]
+	ui = auto
+[init]
+	defaultBranch = main
+[push]
+	autoSetupRemote = true
+[pull]
+	rebase = false
