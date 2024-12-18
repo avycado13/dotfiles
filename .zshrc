@@ -136,4 +136,6 @@ alias config='/usr/bin/git --git-dir=/Users/avy/.cfg/ --work-tree=/Users/avy'
 export ANDROID_SDK_ROOT="/Users/avy/Library/Android/sdk"
 export PATH="$ANDROID_SDK_ROOT/platform-tools:$PATH"
 
-
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
