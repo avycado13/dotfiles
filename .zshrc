@@ -70,7 +70,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git asdf rails python aliases kitty alias-finder brew)
+plugins=(git asdf rails python aliases kitty alias-finder brew pj uv)
 
 source $ZSH/oh-my-zsh.sh
 
