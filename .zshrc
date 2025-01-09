@@ -130,7 +130,6 @@ source ~/.antidote/antidote.zsh
 # initialize plugins statically with ${ZDOTDIR:-~}/.zsh_plugins.txt
 antidote load
 
-source "$HOME/.rye/env"
 alias config='/usr/bin/git --git-dir=/Users/avy/.cfg/ --work-tree=/Users/avy'
 
 export ANDROID_SDK_ROOT="/Users/avy/Library/Android/sdk"
