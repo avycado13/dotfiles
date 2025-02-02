@@ -1,40 +1,82 @@
 {
-  # Inputs for dependencies: Nixpkgs and Home Manager
+  description = "Darwin configuration";
+
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";  # Standard Nix package set
-    home-manager = {
-      url = "github:nix-community/home-manager";  # Home Manager for user configurations
-      inputs.nixpkgs.follows = "nixpkgs";  # Use the same Nixpkgs version
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    darwin.url = "github:lnl7/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+
+    # Optional: Declarative tap management
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
     };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+    homebrew-bundle = {
+      url = "github:homebrew/homebrew-bundle";
+      flake = false;
+    };
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
-  # Outputs: Define system and Home Manager configurations
-  outputs = { self, nixpkgs, home-manager }: {
-    # Home Manager configurations for the current user
-    homeConfigurations = {
-      # Replace "avy" with your actual username
-      avy = home-manager.lib.homeManagerConfiguration {
-        # Set package set for Home Manager
-        pkgs = nixpkgs.legacyPackages.x86_64-darwin;
+  outputs = inputs@{ nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, ... }: {
+    darwinConfigurations = {
+      hostname = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          ./configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.avy = import ./home.nix;
+          }
+        ];
+      };
+    };
 
-        # Basic Home Manager setup
-        home = {
-          username = "avy";  # Replace with your username
-          homeDirectory = "/Users/avy";  # Adjust to your home directory
-          stateVersion = "24.11";  # Match your Nixpkgs version
+    # Expose the configuration for darwin-rebuild
+    packages = {
+      aarch64-darwin = {
+        darwinConfigurations = {
+          "Avys-Mac" = darwin.lib.darwinSystem {
+            system = "aarch64-darwin";
+            modules = [
+              ./configuration.nix  # Make sure this path is correct
+              home-manager.darwinModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.avy = import ./home.nix;
+              }
+              nix-homebrew.darwinModules.nix-homebrew
+              {
+                nix-homebrew = {
+                  # Install Homebrew under the default prefix
+                  enable = true;
 
-          # Add persistent packages using `home.packages`
-          packages = [
-            nixpkgs.legacyPackages.x86_64-darwin.git  # Explicitly use `nixpkgs.legacyPackages`
-            nixpkgs.legacyPackages.x86_64-darwin.neovim  # Explicitly use `nixpkgs.legacyPackages`
-          ];
+                  # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
+                  enableRosetta = true;
 
-          # Optional: Enable and configure Neovim
-          programs.neovim = {
-            enable = true;
+                  # User owning the Homebrew prefix
+                  user = "avy";
+
+                  # Automatically migrate existing Homebrew installations
+                  autoMigrate = true;
+                };
+              }
+            ];
           };
-
-          # Additional configuration goes here
         };
       };
     };
