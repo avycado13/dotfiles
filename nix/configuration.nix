@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # System-wide defaults
   system = {
     defaults = {
@@ -12,21 +14,21 @@
         mineffect = "genie";
         mru-spaces = false;
       };
-      
+
       # Finder settings
       finder = {
         AppleShowAllExtensions = true;
         FXEnableExtensionChangeWarning = false;
         _FXShowPosixPathInTitle = true;
       };
-      
+
       # Trackpad settings
       trackpad = {
         Clicking = true;
         TrackpadRightClick = true;
       };
     };
-    
+
     # System-wide keyboard settings
     keyboard = {
       enableKeyMapping = true;
@@ -41,16 +43,26 @@
     neovim
     curl
     wget
-    
+
     # System utilities
     coreutils
     htop
     tree
+    # misc stuff that every one needs!
+    cowsay
+    file
+    which
+    tree
+    gnused
+    gnutar
+    gawk
+    zstd
+    gnupg
   ];
 
   # Enable zsh
   programs.zsh.enable = true;
-
+  programs.direnv.enable = true;
   # Security settings
   security.pam.enableSudoTouchIdAuth = true;
 
@@ -63,12 +75,11 @@
 
   # Nix settings
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    auto-optimise-store = true;
+    experimental-features = ["nix-command" "flakes"];
   };
 
-  # System version
-  system.stateVersion = "24.11";
+  # Nix Darwin version
+  system.stateVersion = 4;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

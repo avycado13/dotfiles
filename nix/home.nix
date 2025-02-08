@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "avy";
@@ -23,6 +25,8 @@
     # pkgs.hello
     pkgs.neovim
     pkgs.neofetch
+    pkgs.zsh
+    pkgs.git-extras
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -44,7 +48,8 @@
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
+    # ".screenrc".source = dotfiles/.screenrc;
+    ".zshrc".source = ./dotfiles/.zshrc;
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
@@ -70,21 +75,37 @@
   #  /etc/profiles/per-user/avy/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-     EDITOR = "nvim";
+    EDITOR = "nvim";
   };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   programs.zsh.antidote.enable = true;
   programs.git = {
-    enable=true;
+    enable = true;
     userName = "avycado13";
     userEmail = "108358183+avycado13@users.noreply.github.com.";
     aliases = {
       st = "status";
     };
-    extraConfig = ''
-      url."git@github.com:".insteadOf "https://github.com/"
-    '';
+
+    extraConfig = {
+      # trailer "changeid" = {
+      #   key = "Change-Id";
+      # };
+      color = {
+        ui = "auto";
+      };
+      init = {
+        defaultBranch = "main";
+      };
+      push = {
+        autoSetupRemote = true;
+      };
+      pull = {
+        rebase = false;
+      };
+      url."git@github.com:".insteadOf = "https://github.com/";
+    };
   };
 }

@@ -8,7 +8,24 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-
+    nixos-conf-editor.url = "github:snowfallorg/nixos-conf-editor";
+    kubenix.url = "github:hall/kubenix";
+    nixos-shell.url = "github:Mic92/nixos-shell";
+    microvm.url = "github:astro/microvm.nix";
+    microvm.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    xc = {
+      url = "github:joerdav/xc";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    gitignore = {
+      url = "github:hercules-ci/gitignore.nix";
+      # Use the same nixpkgs
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Optional: Declarative tap management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -26,58 +43,62 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    mac-app-util.url = "github:hraban/mac-app-util";
+    musnix = {url = "github:musnix/musnix";};
+    system-manager = {
+      url = "github:numtide/system-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    alejandra = {
+      url = "github:kamadorueda/alejandra";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    deploy-rs.url = "github:serokell/deploy-rs";
+    agenix.url = "github:ryantm/agenix";
+    nix-mineral = {
+      url = "github:cynicsketch/nix-mineral"; # Refers to the main branch and is updated to the latest commit when you use "nix flake update"
+      flake = false;
+    };
+    nix-topology.url = "github:oddlama/nix-topology";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, ... }: {
+  outputs = inputs @ {
+    nixpkgs,
+    home-manager,
+    darwin,
+    nix-homebrew,
+    mac-app-util,
+    kubenix,
+    ...
+  }: {
     darwinConfigurations = {
-      hostname = darwin.lib.darwinSystem {
+      "Avys-Mac" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
           ./configuration.nix
+          ./homebrew.nix # Import the Homebrew configuration
+          mac-app-util.darwinModules.default
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.avy = import ./home.nix;
+            # home-manager.users.foobar = {
+            #   imports = [
+            #     mac-app-util.homeManagerModules.default
+            #   ];
+            # };
+          }
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              enable = true;
+              enableRosetta = true;
+              user = "avy";
+              autoMigrate = true;
+            };
           }
         ];
-      };
-    };
-
-    # Expose the configuration for darwin-rebuild
-    packages = {
-      aarch64-darwin = {
-        darwinConfigurations = {
-          "Avys-Mac" = darwin.lib.darwinSystem {
-            system = "aarch64-darwin";
-            modules = [
-              ./configuration.nix  # Make sure this path is correct
-              home-manager.darwinModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.avy = import ./home.nix;
-              }
-              nix-homebrew.darwinModules.nix-homebrew
-              {
-                nix-homebrew = {
-                  # Install Homebrew under the default prefix
-                  enable = true;
-
-                  # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
-                  enableRosetta = true;
-
-                  # User owning the Homebrew prefix
-                  user = "avy";
-
-                  # Automatically migrate existing Homebrew installations
-                  autoMigrate = true;
-                };
-              }
-            ];
-          };
-        };
       };
     };
   };
