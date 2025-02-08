@@ -6,9 +6,9 @@
 }: {
   nix.settings.trusted-users = ["avy"];
 
-  age.secrets.hashedUserPassword = {
-    file = "${inputs.secrets}/hashedUserPassword.age";
-  };
+  # age.secrets.hashedUserPassword = {
+  #   file = "${inputs.secrets}/hashedUserPassword.age";
+  # };
 
   users = {
     users = {
@@ -16,7 +16,7 @@
         shell = pkgs.zsh;
         uid = 1000;
         isNormalUser = true;
-        hashedPasswordFile = config.age.secrets.hashedUserPassword.path;
+        # hashedPasswordFile = config.age.secrets.hashedUserPassword.path;
         extraGroups = [
           "wheel"
           "users"

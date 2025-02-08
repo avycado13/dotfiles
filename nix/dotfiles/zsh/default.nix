@@ -7,10 +7,6 @@
 }: {
   home.packages = with pkgs; [grc];
 
-  age.secrets.bwSession = {
-    file = "${inputs.secrets}/bwSession.age";
-  };
-
   programs = {
     starship = {
       enable = true;
@@ -105,7 +101,6 @@
 
           if [ $(uname) = "Darwin" ]; then
             path=("$HOME/.nix-profile/bin" "/run/wrappers/bin" "/etc/profiles/per-user/$USER/bin" "/nix/var/nix/profiles/default/bin" "/run/current-system/sw/bin" "/opt/homebrew/bin" $path)
-            export BW_SESSION=$(${pkgs.coreutils}/bin/cat ${config.age.secrets.bwSession.path})
             export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
           fi
 
